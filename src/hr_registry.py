@@ -6,6 +6,7 @@
  хранить, обрабатывать и отображать информацию о сотрудниках.
  '''
 import json    #extra task
+import os   #extra_task
 
 class Employee:
     '''
@@ -128,18 +129,31 @@ class HRRegistry:
             for employee in hr.employees:
                 print(employee.get_info())
 
-    def generate_employee_report(self, filename: str = "employees_report.json"):    #extra task
+    def generate_employee_report(self, filename: str, format_):    #extra task
         '''
         Генерирует отчет обо всех сотрудниках и сохраняет его в формате JSON.
         '''
-        report = []
-        for hr in self.hr_registries:
-            for employee in hr.employees:
-                report.append(employee.to_dict())
-        
-        with open(filename, 'w') as f:
-            json.dump(report, f, indent=3)
-        
+        os.makedirs('files', exist_ok=True)
+        file_path = os.path.join('files', filename)
+
+        if format_ == 'json':
+            report = []
+            for hr in self.hr_registries:
+                for employee in hr.employees:
+                    report.append(employee.to_dict())
+
+            with open(file_path, 'w') as f:
+                json.dump(report, f, indent=3)
+
+        else:
+            report = ''
+            for hr in self.hr_registries:
+                for employee in hr.employees:
+                    report += "\n" + employee.get_info()
+    
+            with open(file_path, 'w') as f:
+                f.write(report + '\n')
+
         print(f"Отчет о сотрудниках сохранен в '{filename}'.")
 
 #Пример использования:
@@ -173,5 +187,5 @@ if __name__ == "__main__":    #extra task
     # else:
     #     print("Сотрудник не найден.")
 
-    registry.generate_employee_report("employees_report.json")
+    registry.generate_employee_report("employees_report.json", 'json')
 
