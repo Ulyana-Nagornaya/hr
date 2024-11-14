@@ -9,7 +9,7 @@
 from abc import ABC, abstractmethod
 import math
 
-class Shape(ABC):
+class Figure(ABC):
     """
     Абстрактный класс для представления геометрической фигуры.
     """
@@ -28,7 +28,7 @@ class Shape(ABC):
         """
         pass
 
-class Square(Shape):
+class Square(Figure):
     """
     Класс для представления квадрата.
     """
@@ -42,7 +42,7 @@ class Square(Shape):
     def perimeter(self) -> float:
         return 4 * self._side
 
-class Rectangle(Shape):
+class Rectangle(Figure):
     """
     Класс для представления прямоугольника.
     """
@@ -57,7 +57,7 @@ class Rectangle(Shape):
     def perimeter(self) -> float:
         return 2 * (self._width + self._height)
 
-class Triangle(Shape):
+class Triangle(Figure):
     """
     Класс для представления треугольника.
     """
@@ -74,7 +74,7 @@ class Triangle(Shape):
     def perimeter(self) -> float:
         return self._a + self._b + self._c
 
-class Circle(Shape):
+class Circle(Figure):
     """
     Класс для представления окружности.
     """
@@ -88,7 +88,7 @@ class Circle(Shape):
     def perimeter(self) -> float:
         return 2 * math.pi * self._radius
 
-class Rhombus(Shape):
+class Rhombus(Figure):
     """
     Класс для представления ромба.
     """
@@ -102,10 +102,28 @@ class Rhombus(Shape):
 
     def perimeter(self) -> float:
         return 4 * self._side
+    
+class Trapezoid(Figure):
+    """
+    Класс для представления трапеции.
+    """
+
+    def __init__(self, a: float, b: float, height: float):
+        self._a = a
+        self._b = b
+        self._height = height
+
+    def area(self) -> float:
+        return ((self._a + self._b) / 2) * self._height
+
+    def perimeter(self) -> float:
+        # Для упрощения, считаем, что боковые стороны равны и равны 1
+        side_length = math.sqrt(((self._b - self._a) / 2) ** 2 + self._height ** 2)
+        return self._a + self._b + 2 * side_length
 
 # Пример использования
 def main():
-    shapes = [
+    figures = [
         Square(4),
         Rectangle(3, 5),
         Triangle(3, 4, 5),
@@ -113,8 +131,8 @@ def main():
         Rhombus(3, 4)
     ]
 
-    for shape in shapes:
-        print(f"{shape.__class__.__name__}: Area = {shape.area():.2f}, Perimeter = {shape.perimeter():.2f}")
+    for figure in figures:
+        print(f"{figure.__class__.__name__}: Area = {figure.area():.2f}, Perimeter = {figure.perimeter():.2f}")
 
 if __name__ == "__main__":
     main()
